@@ -1,0 +1,39 @@
+from PIL import Image
+from cmd_color_printers import *
+import os
+from time import sleep
+
+
+def rename_pictures():
+    common_extensions = {"jpg", "png", "jpeg", "JPG", "PNG", "JPEG"}  # 常见的图片扩展名
+    picture_open_path = "../图片"  # 打开的文件夹
+    picture_save_path = "../your_picture"  # 保存的文件夹
+    printBlue("开始输出\n")
+    open_path_existence = os.path.exists(picture_open_path)
+    save_path_existence = os.path.exists(picture_save_path)
+    if open_path_existence is False or save_path_existence is False:  # 判断文件夹是否存在
+        printRed("路径不存在\n")
+        sleep(3)
+        printSkyBlue("按回车键退出")
+        input("")
+        return
+    picture_new_name = 1
+    for file in os.listdir(picture_open_path):
+        file_name = os.path.join(picture_open_path, file)
+        file_extension = file_name.split(".")[-1]
+        if file_extension not in common_extensions:  # 判断是否为图片扩展名
+            continue
+        im = Image.open(file_name)
+        im.save(f"{picture_save_path}/{str(picture_new_name)}.png")
+        printYellow(f"输出中……第{picture_new_name}/27张\n")
+        picture_new_name += 1
+    if picture_new_name != 1:
+        printGreen("输出完毕，请查收\n")
+    else:
+        printRed("未找到图片\n")
+    sleep(1)
+    printSkyBlue("按回车键退出")
+    input("")
+
+
+rename_pictures()
